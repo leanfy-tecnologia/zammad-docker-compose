@@ -32,8 +32,8 @@ x-shared:
       ELASTICSEARCH_REINDEX:
       NGINX_PORT:
       NGINX_CLIENT_MAX_BODY_SIZE:
-      NGINX_SERVER_NAME: suporte.leanfy.com.br
-      NGINX_SERVER_SCHEME: https
+      NGINX_SERVER_NAME:
+      NGINX_SERVER_SCHEME:
       RAILS_TRUSTED_PROXIES:
       ZAMMAD_HTTP_TYPE:
       ZAMMAD_FQDN:
@@ -96,8 +96,10 @@ services:
   zammad-nginx:
     <<: *zammad-service
     command: ["zammad-nginx"]
-    ports:
+    expose:
       - "${NGINX_PORT:-8080}"
+    ports:
+      - "${NGINX_EXPOSE_PORT:-8080}:${NGINX_PORT:-8080}"
     depends_on:
       - zammad-railsserver
 
@@ -129,13 +131,6 @@ services:
     <<: *zammad-service
     command: ["zammad-websocket"]
 
-  cloudflare-tunnel:
-    image: cloudflare/cloudflared
-    restart: ${RESTART:-always}
-    command: tunnel --no-autoupdate run
-    environment:
-      TUNNEL_TOKEN: eyJhIjoiN2U5NDIxZWU3YWMwNjhjNzBmMjhmZmNjNTQ3YmRiYTUiLCJ0IjoiYTBhMDU1YmQtNDE1NS00ZGExLWJmMjYtY2FmYTRmMWQwMGMwIiwicyI6Ik5HWmlZVEZsWmpVdE0yRXdZeTAwTWpkaExXRXhZVGt0TXprMFptVXpOR0ZrTURoaiJ9
-      
 volumes:
   elasticsearch-data:
     driver: local
