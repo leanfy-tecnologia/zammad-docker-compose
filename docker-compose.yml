@@ -129,6 +129,13 @@ services:
     <<: *zammad-service
     command: ["zammad-websocket"]
 
+  cloudflare-tunnel:
+    image: cloudflare/cloudflared
+    restart: ${RESTART:-always}
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: eyJhIjoiN2U5NDIxZWU3YWMwNjhjNzBmMjhmZmNjNTQ3YmRiYTUiLCJ0IjoiYTBhMDU1YmQtNDE1NS00ZGExLWJmMjYtY2FmYTRmMWQwMGMwIiwicyI6Ik5HWmlZVEZsWmpVdE0yRXdZeTAwTWpkaExXRXhZVGt0TXprMFptVXpOR0ZrTURoaiJ9
+      
 volumes:
   elasticsearch-data:
     driver: local
